@@ -1,5 +1,5 @@
-export default (api) => {
+export default function plugin1(api) {
   api.beforeSendMessage((m) => {
-    console.log('plugin1.beforeSendMessage', m);
+    m['plugin1.beforeSendMessage'] = 'hello';
   });
-};
+}

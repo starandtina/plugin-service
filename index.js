@@ -88,7 +88,7 @@ class PluginService {
     for (const hook of hooks) {
       asyncSeriesWaterfallHook.tapPromise(
         {
-          name: hook.plugin.key || 'plugin',
+          name: hook.plugin.key || hook.plugin.name,
           stage: hook.stage || 0,
           before: hook.before,
         },
@@ -127,17 +127,23 @@ const service = new PluginService({
   plugins: [registerMethodsPlugin, plugin1, plugin2],
 });
 
-const message = { content: 'm1' };
-service.applyPlugins({
-  key: 'beforeSendMessage',
-  initialValue: { message },
-});
+(async () => {
+  const message = { content: 'm1' };
+  await service
+    .applyPlugins({
+      key: 'beforeSendMessage',
+      initialValue: { message },
+    })
+    .then((r) => console.log(JSON.stringify(r, null, 2)));
 
-////
+  /**
+   * handle message
+   */
 
-service
-  .applyPlugins({
-    key: 'afterSendMessageSuccess',
-    initialValue: { message },
-  })
-  .then((r) => console.log(r));
+  await service
+    .applyPlugins({
+      key: 'afterSendMessageSuccess',
+      initialValue: { message },
+    })
+    .then((r) => console.log(JSON.stringify(r, null, 2)));
+})();
