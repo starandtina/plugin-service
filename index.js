@@ -46,12 +46,7 @@ class PluginAPI {
         },
     };
   }
-  // {
-  //   pluginAPI,
-  //   service,
-  //   serviceProps,
-  //   staticProps
-  // }
+  // { pluginAPI, service, serviceProps, staticProps }
   static proxyPluginAPI(opts) {
     return new Proxy(opts.pluginAPI, {
       get: (target, prop) => {
@@ -93,12 +88,7 @@ class PluginService {
           before: hook.before,
         },
         async (memo) => {
-          // const dateStart = new Date();
           const ret = await hook.fn(memo, opts.args);
-          // hook.plugin.time.hooks[opts.key] ||= [];
-          // hook.plugin.time.hooks[opts.key].push(
-          //   new Date().getTime() - dateStart.getTime()
-          // );
           return ret;
         }
       );
